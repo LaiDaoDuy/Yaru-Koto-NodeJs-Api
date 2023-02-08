@@ -1,0 +1,27 @@
+@baseUrl=http://localhost:3002/api
+
+PUT {{baseUrl}}/many2many/question
+content-type: application/json
+
+{
+    "id": 25,
+    "title": "Animal",
+    "text": "What is it? - updated",
+    "categories": [
+        {
+            "name": "Dog"
+        },
+        {
+            "name": "Cat"
+        },
+        {
+            "name": "Mouse"
+        },
+        {
+            "name": "Tiger"
+        },
+        {
+            "name": "Donan"
+        }
+    ]
+}
