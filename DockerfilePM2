@@ -1,0 +1,25 @@
+FROM node:12.22.3
+
+WORKDIR /usr/src/app
+
+COPY src ./src
+COPY .* ./
+COPY *.json ./
+COPY *.ts ./
+
+RUN npm install
+RUN npm run build
+
+RUN cp ./.env ./dist/.env
+
+RUN npm install pm2@latest -g
+
+RUN pm2 install pm2-logrotate
+RUN pm2 set pm2-logrotate:compress true
+RUN pm2 set pm2-logrotate:rotateInterval '0 0 * * *'
+RUN pm2 set pm2-logrotate:max_size 50M
+RUN pm2 set pm2-logrotate:retain 100000
+
+EXPOSE 3002
+
+CMD ["pm2-runtime", "/usr/src/app/ecosystem.config.js"]

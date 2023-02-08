@@ -1,0 +1,60 @@
+version: '3.7'
+
+networks:
+    app-tier:
+        driver: bridge
+
+services:
+    mysql:
+        image: mysql:5.7.34
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_HOST: localhost
+            MYSQL_ROOT_PASSWORD: Root@123
+            MYSQL_DATABASE: nodejs_db
+            LANG: C.UTF-8
+        volumes:
+            - ./mysql/:/var/lib/mysql/
+        networks:
+            - app-tier
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+    nodejs-express-typeorm-api:
+        container_name: nodejs-express-typeorm-api
+        depends_on:
+            - mysql
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        restart: on-failure
+        ports:
+            - "3002:3002"
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        networks:
+            - app-tier
+        stdin_open: true
+        tty: true
+        command: npm start
+
+    # nodejs-express-typeorm-api-pm2:
+    #     container_name: nodejs-express-typeorm-api-pm2
+    #     depends_on:
+    #         - mysql
+    #     build:
+    #         context: .
+    #         dockerfile: ./DockerfilePM2
+    #     restart: on-failure
+    #     ports:
+    #         - "3002:3002"
+    #     volumes:
+    #         - ./pm2-docker/ecosystem.config.js:/usr/src/app/ecosystem.config.js
+    #         - ./pm2-docker/logs:/var/log/api
+    #     networks:
+    #         - app-tier
+    #     stdin_open: true
+    #     tty: true
