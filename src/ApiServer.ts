@@ -1,5 +1,5 @@
 import * as bodyParser from 'body-parser';
-import * as controllers from './controllers';
+import * as controllers from './controllers/index';
 import * as http from 'http';
 import { Server } from '@overnightjs/core';
 import Log from './utils/Log';
@@ -10,8 +10,6 @@ import 'reflect-metadata';
 import Container from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
 import * as entities from './bo/entities/index';
-import * as many2manyEntities from './bo/entities/many2many/index';
-import * as one2oneEntities from './bo/entities/one2one/index';
 import * as ormconfig from '../ormconfig';
 
 class ApiServer extends Server {
@@ -38,24 +36,6 @@ class ApiServer extends Server {
       }
     }
 
-    // many2manyEntities example
-    for (const name in many2manyEntities) {
-      if (Object.prototype.hasOwnProperty.call(many2manyEntities, name)) {
-        // eslint-disable-next-line
-        const entity: any = (many2manyEntities as any)[name];
-        arrEntities.push(entity);
-      }
-    }
-
-    // one2oneEntities example
-    for (const name in one2oneEntities) {
-      if (Object.prototype.hasOwnProperty.call(one2oneEntities, name)) {
-        // eslint-disable-next-line
-        const entity: any = (one2oneEntities as any)[name];
-        arrEntities.push(entity);
-      }
-    }
-
     // eslint-disable-next-line
     const configDB: any = {
       ...ormconfig.default,
@@ -66,7 +46,7 @@ class ApiServer extends Server {
 
     await createConnection(configDB).catch((ex) => {
       if (ex.name === 'AlreadyHasActiveConnectionError') {
-        console.log('The connection is already open');
+        console.log('The connection is already open.');
       } else {
         console.log(`** createDBConnection error:`, `config: ${JSON.stringify(configDB)} - name:${ex.name} - msg:${ex.message}`);
       }

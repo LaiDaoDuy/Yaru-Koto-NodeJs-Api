@@ -16,31 +16,28 @@ export class AuthenService extends BaseService<User, UserRepository> {
   }
 
   public async login(authenReq: AuthenReq): Promise<AuthenRes | undefined> {
-    if (!authenReq.usr || authenReq.usr.trim().length === 0 || !authenReq.pwd || authenReq.pwd.trim().length === 0) {
-      throw new AppException('login_failed', 'usr or pwd empty');
+    if (!authenReq.usr || authenReq.usr.trim().length === 0 || !authenReq.code || authenReq.code.length === 0) {
+      throw new AppException('login_failed', 'usr or code empty');
     }
 
     const user: User | undefined = await this.findById(authenReq.usr).catch((err) => {
       throw err;
     });
 
-    if (user && user.pwd === authenReq.pwd) {
+    if (user && user.code === Number.parseInt(authenReq.code)) {
       const jwtInfo: JwtInfo = {
-        usr: user.usr,
-        role: user.role
+        usr: user.usr
       };
 
       const token = jwt.sign(jwtInfo, <string>process.env.JWT_SECRET, { expiresIn: process.env.TOKEN_EXPIRE });
       const authenRes: AuthenRes = {
         usr: user.usr,
-        fullname: user.fullName,
-        role: user.role,
         token: token
       };
 
       return authenRes;
     } else {
-      throw new AppException('login_failed', !user ? 'user doest not exist' : 'wrong password');
+      throw new AppException('login_failed', !user ? 'user doest not exist' : 'wrong code');
     }
   }
 }

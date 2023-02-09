@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import Log from '../utils/Log';
 import { JwtInfo } from '../bo/models/JwtInfo';
-import { ExecOptions } from 'child_process';
 import HttpException from '../exceptions/HttpException';
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction): void => {
@@ -19,8 +18,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction): void 
       const jwtPayload: jwt.JwtPayload = <jwt.JwtPayload>jwt.verify(token, jwtToken);
 
       const jwtInfo: JwtInfo = {
-        usr: jwtPayload.usr,
-        role: jwtPayload.role
+        usr: jwtPayload.usr
       };
 
       res.locals.jwtPayload = jwtInfo;

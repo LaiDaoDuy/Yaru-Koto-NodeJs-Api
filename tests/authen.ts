@@ -8,7 +8,6 @@ import 'reflect-metadata';
 import Container from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
 import * as entities from '../src/bo/entities/index';
-import * as many2manyEntities from '../src/bo/entities/many2many/index';
 import * as ormconfig from '../ormconfig';
 import { getCustomRepository } from 'typeorm';
 
@@ -25,26 +24,17 @@ describe('Authen', () => {
       useContainer(Container);
 
       // eslint-disable-next-line
-        const arrEntities: any[] = [];
+      const arrEntities: any[] = [];
       for (const name in entities) {
         if (Object.prototype.hasOwnProperty.call(entities, name)) {
           // eslint-disable-next-line
-                const entity:any = (entities as any)[name];
-          arrEntities.push(entity);
-        }
-      }
-
-      // many2manyEntities example
-      for (const name in many2manyEntities) {
-        if (Object.prototype.hasOwnProperty.call(many2manyEntities, name)) {
-          // eslint-disable-next-line
-                const entity:any = (many2manyEntities as any)[name];
+          const entity: any = (entities as any)[name];
           arrEntities.push(entity);
         }
       }
 
       // eslint-disable-next-line
-        const configDB: any = {
+      const configDB: any = {
         ...ormconfig.default,
         entities: arrEntities,
         migrations: [],
@@ -83,7 +73,7 @@ describe('Authen', () => {
   it('login success', async () => {
     const request: AuthenReq = {
       usr: 'cus1',
-      pwd: '123456'
+      code: '123456'
     };
     const response: AuthenRes = await authenService.login(request);
 
@@ -95,13 +85,13 @@ describe('Authen', () => {
     try {
       const request: AuthenReq = {
         usr: 'cus1',
-        pwd: '12345'
+        code: '12345'
       };
       await authenService.login(request).catch((e) => {
         throw e;
       });
     } catch (e) {
-      expect(e.errCd).to.equal('login_failed');
+      expect(e).to.equal('login_failed');
     }
   });
 
@@ -110,13 +100,13 @@ describe('Authen', () => {
     try {
       const request: AuthenReq = {
         usr: 'cus999',
-        pwd: '123456'
+        code: '123456'
       };
       await authenService.login(request).catch((e) => {
         throw e;
       });
     } catch (e) {
-      expect(e.errCd).to.equal('login_failed');
+      expect(e).to.equal('login_failed');
     }
   });
 
@@ -125,13 +115,13 @@ describe('Authen', () => {
     try {
       const request: AuthenReq = {
         usr: '',
-        pwd: ''
+        code: ''
       };
       await authenService.login(request).catch((e) => {
         throw e;
       });
     } catch (e) {
-      expect(e.errCd).to.equal('login_failed');
+      expect(e).to.equal('login_failed');
     }
   });
 });

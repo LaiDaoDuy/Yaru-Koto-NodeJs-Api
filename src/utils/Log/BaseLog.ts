@@ -33,7 +33,7 @@ export class BaseLog implements IBaseLog {
     }
 
     if (options) {
-      if (options.jwtPayload) data.jwt = `${options.jwtPayload.usr}.${options.jwtPayload.role}`;
+      if (options.jwtPayload) data.jwt = `${options.jwtPayload.usr}`;
 
       if (options.req) {
         data.endpoint = `${options.req.method} ${options.req.url}`;

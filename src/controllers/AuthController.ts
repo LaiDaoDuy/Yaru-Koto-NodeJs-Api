@@ -14,7 +14,7 @@ export class AuthController {
 
   @Post()
   private async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-    Log.info(this.className, 'register', `RQ`, { req: req });
+    Log.info(this.className, 'login', `RQ`, { req: req });
 
     try {
       const authenReq: AuthenReq = req.body;
