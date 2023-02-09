@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Controller, Get, Post } from '@overnightjs/core';
+import { Controller, Get, Post, Put } from '@overnightjs/core';
 import { NextFunction, Request, Response } from 'express';
 import Log from '../utils/Log';
 import { SectionService } from '../services/SectionService';
@@ -67,6 +67,29 @@ export class SectionController {
       }
 
       res.status(200).json({ data: section });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @Put(':sectionId')
+  public async updateSection(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'updateSection', 'RQ', { req: req });
+
+    try {
+      const sectionBody: Section = req.body;
+      const sectionId: number = Number.parseInt(req.params.sectionId);
+      const sectionDb: Section = await this.sectionService.findById(sectionId);
+      if (!sectionDb) {
+        throw new NotFoundException(sectionId);
+      }
+      const sectionDb2: Section = await this.sectionService.findByName(sectionBody.name);
+      if (sectionDb2) {
+        throw new ExistedException(sectionBody.name);
+      }
+      const newSection: Section = await this.sectionService.update(sectionId, sectionBody);
+
+      res.status(200).json({ data: newSection });
     } catch (e) {
       next(e);
     }

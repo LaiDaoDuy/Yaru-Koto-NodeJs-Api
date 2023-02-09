@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Controller, Get, Post } from '@overnightjs/core';
+import { Controller, Get, Post, Put } from '@overnightjs/core';
 import { NextFunction, Request, Response } from 'express';
 import Log from '../utils/Log';
 import { ProjectService } from '../services/ProjectService';
@@ -58,6 +58,29 @@ export class ProjectController {
       }
 
       res.status(200).json({ data: project });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @Put(':projectId')
+  public async updateProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'updateProject', 'RQ', { req: req });
+
+    try {
+      const projectBody: Project = req.body;
+      const projectId: number = Number.parseInt(req.params.projectId);
+      const projectDb: Project = await this.projectService.findById(projectId);
+      if (!projectDb) {
+        throw new NotFoundException(projectId);
+      }
+      const projectDb2: Project = await this.projectService.findByName(projectBody.name);
+      if (projectDb2) {
+        throw new ExistedException(projectBody.name);
+      }
+      const newProject: Project = await this.projectService.update(projectId, projectBody);
+
+      res.status(200).json({ data: newProject });
     } catch (e) {
       next(e);
     }
