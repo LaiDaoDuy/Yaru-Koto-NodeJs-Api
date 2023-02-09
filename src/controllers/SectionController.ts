@@ -52,4 +52,23 @@ export class SectionController {
       next(e);
     }
   }
+
+  @Get(':sectionId')
+  public async getSection(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'getSection', 'RQ', { req: req });
+
+    try {
+      const sectionId: number = Number.parseInt(req.params.sectionId);
+      const section: Section = await this.sectionService.findById(sectionId, {
+        relations: ['tasks']
+      });
+      if (!section) {
+        throw new NotFoundException(sectionId);
+      }
+
+      res.status(200).json({ data: section });
+    } catch (e) {
+      next(e);
+    }
+  }
 }

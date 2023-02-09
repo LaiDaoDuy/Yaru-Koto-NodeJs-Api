@@ -46,7 +46,7 @@ export class ProjectController {
 
   @Get(':projectId')
   public async getProject(req: Request, res: Response, next: NextFunction): Promise<void> {
-    Log.info(this.className, 'listProject', 'RQ', { req: req });
+    Log.info(this.className, 'getProject', 'RQ', { req: req });
 
     try {
       const projectId: number = Number.parseInt(req.params.projectId);

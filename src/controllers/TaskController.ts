@@ -47,4 +47,21 @@ export class TaskController {
       next(e);
     }
   }
+
+  @Get(':taskId')
+  public async getTask(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'getTask', 'RQ', { req: req });
+
+    try {
+      const taskId: number = Number.parseInt(req.params.taskId);
+      const task: Task = await this.taskService.findById(taskId);
+      if (!task) {
+        throw new NotFoundException(taskId);
+      }
+
+      res.status(200).json({ data: task });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
