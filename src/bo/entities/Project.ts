@@ -17,6 +17,6 @@ export class Project extends BaseEntity {
   })
   favorite: boolean;
 
-  @OneToMany(() => Section, (section) => section.id)
-  section: Section[];
+  @OneToMany(() => Section, (section) => section.project)
+  sections: Section[];
 }

@@ -1,16 +1,10 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Section } from './Section';
 
 @Entity({ name: 'tasks' })
 export class Task extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({
-    name: 'section_id',
-    nullable: false
-  })
-  sectionId: number;
 
   @Column()
   content: string;
@@ -38,4 +32,11 @@ export class Task extends BaseEntity {
     type: 'timestamp'
   })
   dueTime: string;
+
+  @ManyToOne(() => Section, (section) => section.tasks)
+  @JoinColumn({
+    name: 'section_id',
+    referencedColumnName: 'id'
+  })
+  section: Section;
 }

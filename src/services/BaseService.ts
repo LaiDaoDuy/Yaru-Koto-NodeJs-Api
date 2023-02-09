@@ -24,13 +24,13 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
   }
 
   // eslint-disable-next-line
-  async store(data: any): Promise<T> {
-    return await this.repository.save(data);
+  async store(data: any, option?: SaveOptions): Promise<T> {
+    return await this.repository.save(data, option);
   }
 
   // eslint-disable-next-line
   async update(id: EntityId, data: any, options?: FindOneOptions<T>): Promise<T> {
-    await this.repository.save(data);
+    await this.repository.update(id, data);
     return await this.findById(id, options);
   }
 

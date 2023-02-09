@@ -15,7 +15,7 @@ export class UserController {
 
   @Put()
   @Middleware([checkJwt])
-  private async up(req: Request, res: Response, next: NextFunction): Promise<void> {
+  private async updateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     Log.info(this.className, 'updateUser', `RQ`, { req: req });
 
     try {
