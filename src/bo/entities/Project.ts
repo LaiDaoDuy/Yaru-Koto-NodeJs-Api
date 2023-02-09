@@ -17,6 +17,8 @@ export class Project extends BaseEntity {
   })
   favorite: boolean;
 
-  @OneToMany(() => Section, (section) => section.project)
+  @OneToMany(() => Section, (section) => section.project, {
+    cascade: ['remove']
+  })
   sections: Section[];
 }

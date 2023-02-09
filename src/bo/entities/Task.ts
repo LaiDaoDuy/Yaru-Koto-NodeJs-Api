@@ -33,7 +33,9 @@ export class Task extends BaseEntity {
   })
   dueTime: string;
 
-  @ManyToOne(() => Section, (section) => section.tasks)
+  @ManyToOne(() => Section, (section) => section.tasks, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({
     name: 'section_id',
     referencedColumnName: 'id'

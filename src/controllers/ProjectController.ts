@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Controller, Get, Post, Put } from '@overnightjs/core';
+import { Controller, Get, Post, Put, Delete } from '@overnightjs/core';
 import { NextFunction, Request, Response } from 'express';
 import Log from '../utils/Log';
 import { ProjectService } from '../services/ProjectService';
@@ -81,6 +81,24 @@ export class ProjectController {
       const newProject: Project = await this.projectService.update(projectId, projectBody);
 
       res.status(200).json({ data: newProject });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @Delete(':projectId')
+  public async deleteProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'deleteProject', 'RQ', { req: req });
+
+    try {
+      const projectId: number = Number.parseInt(req.params.projectId);
+      const projectDb: Project = await this.projectService.findById(projectId);
+      if (!projectDb) {
+        throw new NotFoundException(projectId);
+      }
+      await this.projectService.delete(projectId);
+
+      res.status(200).json({ data: projectDb });
     } catch (e) {
       next(e);
     }

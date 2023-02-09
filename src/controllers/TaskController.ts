@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Controller, Get, Post, Put } from '@overnightjs/core';
+import { Controller, Get, Post, Put, Delete } from '@overnightjs/core';
 import { TaskService } from '../services';
 import { NextFunction, Request, Response } from 'express';
 import Log from '../utils/Log';
@@ -80,6 +80,24 @@ export class TaskController {
       const newSection: Task = await this.taskService.update(taskId, taskBody);
 
       res.status(200).json({ data: newSection });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @Delete(':taskId')
+  public async deleteTask(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'deleteTask', 'RQ', { req: req });
+
+    try {
+      const taskId: number = Number.parseInt(req.params.taskId);
+      const taskDb: Task = await this.taskService.findById(taskId);
+      if (!taskDb) {
+        throw new NotFoundException(taskId);
+      }
+      await this.taskService.delete(taskId);
+
+      res.status(200).json({ data: taskDb });
     } catch (e) {
       next(e);
     }

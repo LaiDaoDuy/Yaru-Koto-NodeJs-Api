@@ -14,14 +14,16 @@ export class Section extends BaseEntity {
   name: string;
 
   @OneToMany(() => Task, (task) => task.section, {
-    cascade: false
+    cascade: ['remove']
   })
   tasks: Task[];
 
-  @ManyToOne(() => Project, (project) => project.sections)
+  @ManyToOne(() => Project, (project) => project.sections, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({
     name: 'project_id',
-    referencedColumnName: ''
+    referencedColumnName: 'id'
   })
   project: Project;
 }
