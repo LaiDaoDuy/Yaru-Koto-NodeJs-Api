@@ -15,14 +15,17 @@ export class SectionController {
   private className = 'SectionController';
   constructor(private readonly sectionService: SectionService, private readonly projectService: ProjectService) {}
 
-  @Get()
-  public async listSection(req: Request, res: Response, next: NextFunction): Promise<void> {
-    Log.info(this.className, 'listSection', 'RQ', { req: req });
+  @Get(':sectionId')
+  public async listSectionByProjectId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'listSectionByProjectId', 'RQ', { req: req });
 
     try {
-      const sections: Section[] = await this.sectionService.index();
+      const projectId: number = Number.parseInt(req.params.sectionId);
+      const project: Project = await this.projectService.findById(projectId, {
+        relations: ['sections']
+      });
 
-      res.status(200).json({ data: sections });
+      res.status(200).json({ data: project.sections });
     } catch (e) {
       next(e);
     }
@@ -48,25 +51,6 @@ export class SectionController {
       const newSection: Section = await this.sectionService.store(sectionBody);
 
       res.status(200).json({ data: newSection });
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  @Get(':sectionId')
-  public async getSection(req: Request, res: Response, next: NextFunction): Promise<void> {
-    Log.info(this.className, 'getSection', 'RQ', { req: req });
-
-    try {
-      const sectionId: number = Number.parseInt(req.params.sectionId);
-      const section: Section = await this.sectionService.findById(sectionId, {
-        relations: ['tasks']
-      });
-      if (!section) {
-        throw new NotFoundException(sectionId);
-      }
-
-      res.status(200).json({ data: section });
     } catch (e) {
       next(e);
     }
