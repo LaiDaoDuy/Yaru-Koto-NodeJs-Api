@@ -7,7 +7,6 @@ import { Task } from '../bo/entities/Task';
 import { Section } from '../bo/entities/Section';
 import { SectionService } from '../services/SectionService';
 import { NotFoundException } from '../exceptions/NotFoundException';
-import { ExistedException } from '../exceptions/ExistedException';
 
 @Service()
 @Controller('api/task')
@@ -16,13 +15,19 @@ export class TaskController {
   constructor(private readonly taskService: TaskService, private readonly sectionService: SectionService) {}
 
   @Get()
-  public async listTask(req: Request, res: Response, next: NextFunction): Promise<void> {
-    Log.info(this.className, 'listTask', 'RQ', { req: req });
+  public async listTaskBySectionId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    Log.info(this.className, 'listTaskBySectionId', 'RQ', { req: req });
 
     try {
-      const task: Task[] = await this.taskService.index();
+      const sectionId: number = parseInt(req.query.section_id as string);
+      const sectionDb: Section = await this.sectionService.findById(sectionId, {
+        relations: ['tasks']
+      });
+      if (!sectionDb) {
+        throw new NotFoundException(sectionId);
+      }
 
-      res.status(200).json({ data: task });
+      res.status(200).json({ data: sectionDb.tasks });
     } catch (e) {
       next(e);
     }

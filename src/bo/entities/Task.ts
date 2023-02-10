@@ -17,7 +17,7 @@ export class Task extends BaseEntity {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)'
   })
-  createAt: string;
+  createAt: {};
 
   @UpdateDateColumn({
     name: 'update_at',

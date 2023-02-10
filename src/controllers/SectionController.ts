@@ -15,12 +15,12 @@ export class SectionController {
   private className = 'SectionController';
   constructor(private readonly sectionService: SectionService, private readonly projectService: ProjectService) {}
 
-  @Get(':sectionId')
+  @Get()
   public async listSectionByProjectId(req: Request, res: Response, next: NextFunction): Promise<void> {
     Log.info(this.className, 'listSectionByProjectId', 'RQ', { req: req });
 
     try {
-      const projectId: number = Number.parseInt(req.params.sectionId);
+      const projectId: number = Number.parseInt(req.query.project_id as string);
       const project: Project = await this.projectService.findById(projectId, {
         relations: ['sections']
       });
