@@ -6,12 +6,15 @@ import { ProjectService } from '../services/ProjectService';
 import { Project } from '../bo/entities/Project';
 import { ExistedException } from '../exceptions/ExistedException';
 import { NotFoundException } from '../exceptions/NotFoundException';
+import { SectionService } from '../services/SectionService';
+import { Section } from '../bo/entities/Section';
+import { sectionNameDefault } from '../consts/DataDefault';
 
 @Service()
 @Controller('api/project')
 export class ProjectController {
   private className = 'ProjectController';
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(private readonly projectService: ProjectService, private readonly sectionService: SectionService) {}
 
   @Get()
   public async listProject(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -37,6 +40,10 @@ export class ProjectController {
         throw new ExistedException(projectBody.name);
       }
       const newProject: Project = await this.projectService.store(projectBody);
+      const sectionDeault: Section = new Section();
+      sectionDeault.name = sectionNameDefault;
+      sectionDeault.project = newProject;
+      await this.sectionService.store(sectionDeault);
 
       res.status(200).json({ data: newProject });
     } catch (e) {
