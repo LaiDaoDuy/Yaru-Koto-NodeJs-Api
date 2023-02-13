@@ -39,13 +39,19 @@ export class SectionController {
       const sectionBody: Section = req.body;
       const projectId: number = Number.parseInt(req.params.projectId);
 
-      const sectionDb: Section = await this.sectionService.findByName(sectionBody.name);
-      if (sectionDb) {
-        throw new ExistedException(sectionBody.name);
-      }
-      const projectDb: Project = await this.projectService.findById(projectId);
+      const projectDb: Project = await this.projectService.findById(projectId, {
+        relations: ['sections']
+      });
       if (!projectDb) {
         throw new NotFoundException(projectId);
+      }
+
+      const sectionsDb: Section[] = projectDb.sections;
+
+      for (let i = 0; i < sectionsDb.length; i++) {
+        if (sectionsDb[i].name === sectionBody.name) {
+          throw new ExistedException(sectionBody.name);
+        }
       }
       sectionBody.project = projectDb;
       const newSection: Section = await this.sectionService.store(sectionBody);
