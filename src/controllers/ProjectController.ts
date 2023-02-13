@@ -57,9 +57,7 @@ export class ProjectController {
 
     try {
       const projectId: number = Number.parseInt(req.params.projectId);
-      const project: Project = await this.projectService.findById(projectId, {
-        relations: ['sections']
-      });
+      const project: Project = await this.projectService.findById(projectId);
       if (!project) {
         throw new NotFoundException(projectId);
       }
