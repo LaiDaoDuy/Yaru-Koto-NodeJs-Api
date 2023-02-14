@@ -1,5 +1,8 @@
 @baseUrl=http://localhost:3002/api
 
-DELETE {{baseUrl}}/one2one/lai@mail.com
+POST {{baseUrl}}/project
 content-type: application/json
 
+{
+    "name": "List a"
+}

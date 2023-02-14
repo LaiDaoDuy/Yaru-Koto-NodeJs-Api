@@ -1,6 +1,0 @@
-@baseUrl=http://localhost:3002/api
-
-GET {{baseUrl}}/user/cus2
-content-type: application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJjb3JwIiwicm9sZSI6MiwiaWF0IjoxNjc1ODI4MDEwLCJleHAiOjE2NzU5MTQ0MTB9.ObF58PcDCX6FkzT8-t0e2zaOdm21NiHHeFgxNpG6d0A
-

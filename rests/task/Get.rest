@@ -1,5 +1,4 @@
 @baseUrl=http://localhost:3002/api
 
-GET {{baseUrl}}/one2one
+GET {{baseUrl}}/task/5
 content-type: application/json
-

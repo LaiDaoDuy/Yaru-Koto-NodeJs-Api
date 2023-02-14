@@ -1,9 +1,4 @@
 @baseUrl=http://localhost:3002/api
 
-POST {{baseUrl}}/auth
+GET {{baseUrl}}/project
 content-type: application/json
-
-{
-    "usr": "corp",
-    "pwd": "123456"
-}

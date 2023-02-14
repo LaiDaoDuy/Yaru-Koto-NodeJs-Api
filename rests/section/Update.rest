@@ -1,9 +1,8 @@
 @baseUrl=http://localhost:3002/api
 
-PUT {{baseUrl}}/many2many/category
+PUT {{baseUrl}}/section/30?project_id=5
 content-type: application/json
 
 {
-    "id": 22,
-    "name": "Dog 1"
+    "name": "Section 04"
 }

@@ -1,4 +1,4 @@
 @baseUrl=http://localhost:3002/api
 
-GET {{baseUrl}}/one2one/lai@mail.com
+DELETE {{baseUrl}}/task/6
 content-type: application/json

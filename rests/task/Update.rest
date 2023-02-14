@@ -1,0 +1,10 @@
+@baseUrl=http://localhost:3002/api
+
+PUT {{baseUrl}}/task/6
+content-type: application/json
+
+{
+    "content": "abc",
+    "description": "abc",
+    "dueTime": ""
+}

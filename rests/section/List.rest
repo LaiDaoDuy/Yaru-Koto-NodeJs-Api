@@ -1,4 +1,4 @@
 @baseUrl=http://localhost:3002/api
 
-GET {{baseUrl}}/many2many/category/all
+GET {{baseUrl}}/section?project_id=5
 content-type: application/json

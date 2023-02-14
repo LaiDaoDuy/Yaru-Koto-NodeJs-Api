@@ -1,0 +1,12 @@
+@baseUrl=http://localhost:3002/api
+
+POST {{baseUrl}}/auth
+content-type: application/json
+
+{
+    "usr": "daoduylai",
+    "code": 621999
+}
+
+# jsondata = JSON.parse(responseBody)
+# pm.environment.set('token', jsondata.data.token)

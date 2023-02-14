@@ -1,4 +1,8 @@
 @baseUrl=http://localhost:3002/api
 
-DELETE {{baseUrl}}/many2many/question/26
+POST {{baseUrl}}/section/5
 content-type: application/json
+
+{
+    "name": "Section 03"
+}

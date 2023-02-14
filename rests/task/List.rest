@@ -1,4 +1,4 @@
 @baseUrl=http://localhost:3002/api
 
-DELETE {{baseUrl}}/many2many/category/10
+GET {{baseUrl}}/task?section_id=5
 content-type: application/json

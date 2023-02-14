@@ -1,0 +1,10 @@
+@baseUrl=http://localhost:3002/api
+
+PUT {{baseUrl}}/user
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJkYW9kdXlsYWkiLCJpYXQiOjE2NzYzNDQ0NzYsImV4cCI6MTY3NjQzMDg3Nn0.46hLqJ1JtaP9zn4kiFsWWOnglO1q4ZLZYBZbshP5X6s
+
+{
+    "usr": "daoduylai",
+    "code": 621999
+}

@@ -1,0 +1,12 @@
+@baseUrl=http://localhost:3002/api
+
+PUT {{baseUrl}}/project/17
+content-type: application/json
+
+# {
+#     "favorite": true
+# }
+
+{
+    "name": "List b"
+}
