@@ -12,6 +12,11 @@ export class Task extends BaseEntity {
   @Column()
   description: string;
 
+  @Column({
+    default: '0'
+  })
+  completed: boolean;
+
   @CreateDateColumn({
     name: 'create_at',
     type: 'timestamp',
