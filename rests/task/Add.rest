@@ -1,6 +1,6 @@
 @baseUrl=http://localhost:3002/api
 
-POST {{baseUrl}}/task/5
+POST {{baseUrl}}/task?section_id=5
 content-type: application/json
 
 {

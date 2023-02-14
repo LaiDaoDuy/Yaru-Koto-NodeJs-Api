@@ -33,13 +33,13 @@ export class TaskController {
     }
   }
 
-  @Post(':sectionId')
+  @Post()
   public async addTask(req: Request, res: Response, next: NextFunction): Promise<void> {
     Log.info(this.className, 'addTask', 'RQ', { req: req });
 
     try {
       const taskBody: Task = req.body;
-      const sectionId: number = Number.parseInt(req.params.sectionId);
+      const sectionId: number = Number.parseInt(req.query.section_id as string);
 
       const sectionDb: Section = await this.sectionService.findById(sectionId);
       if (!sectionDb) {
